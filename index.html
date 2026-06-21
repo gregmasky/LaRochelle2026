@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1A3A4A">
+<title>Carnet de voyage — La Rochelle 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark: #1A3A4A;
+  --mid: #2E6B80;
+  --accent: #C8914A;
+  --bg: #FAFAF8;
+  --bg2: #F0EFEB;
+  --border: #E2E0DA;
+  --text: #2A2A2A;
+  --muted: #888;
+  --warn: #C0392B;
+  --warn-bg: #FDF2F2;
+  --info: #2E6B80;
+  --info-bg: #EAF4F8;
+  --green: #27AE60;
+  --white: #fff;
+  --bottom-h: 60px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding-bottom:24px;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--bottom-h);background:var(--dark);border-bottom:2px solid var(--accent);z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.topbar-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--bg);font-weight:400;letter-spacing:.02em;flex:1;text-align:center}
+.topbar-section{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:block;margin-top:1px}
+.hamburger{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px;border-radius:6px;transition:background .2s}
+.hamburger:hover{background:rgba(255,255,255,.1)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--bg);border-radius:2px;transition:all .3s ease}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── NAV MODAL ── */
+.nav-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.nav-backdrop.open{opacity:1;pointer-events:auto}
+.nav-panel{position:fixed;top:var(--bottom-h);left:0;right:0;background:var(--dark);z-index:160;padding:16px;border-bottom:2px solid var(--accent);transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .25s ease,opacity .25s ease;max-height:calc(100vh - var(--bottom-h));overflow-y:auto}
+.nav-panel.open{transform:translateY(0);opacity:1;pointer-events:auto}
+.nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.nav-grid-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 6px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:all .2s;color:rgba(250,250,248,.6);font-size:.6rem;font-family:'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.nav-grid-item .nav-ico{font-size:1.3rem;line-height:1}
+.nav-grid-item:hover{background:rgba(255,255,255,.12);color:var(--bg)}
+.nav-grid-item.active{background:rgba(200,145,74,.15);border-color:var(--accent);color:var(--accent)}
+
+/* ── SECTIONS ── */
+.section{display:none;padding:calc(var(--bottom-h) + 12px) 16px 16px;max-width:760px;margin:0 auto;animation:fadeIn .25s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── HERO ── */
+.hero{position:relative;border-radius:12px;overflow:hidden;margin-bottom:20px;height:200px}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,58,74,.95) 0%,rgba(26,58,74,.3) 60%,transparent 100%)}
+.hero-content{position:absolute;bottom:0;left:0;right:0;padding:16px 20px}
+.hero-eyebrow{font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.hero-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--bg);line-height:1.1;font-weight:400}
+.hero-meta{font-size:.72rem;color:rgba(250,250,248,.55);margin-top:4px;letter-spacing:.04em}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.card-title{font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:4px}
+.tbl th{background:var(--dark);color:var(--bg);font-weight:600;font-size:.72rem;letter-spacing:.05em;padding:7px 10px;text-align:left}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.4}
+.tbl tr:nth-child(even) td{background:rgba(0,0,0,.03)}
+.tbl td:first-child{font-weight:500;white-space:nowrap}
+.tbl a{color:var(--mid);text-decoration:none;font-size:.78rem}
+.tbl a:hover{text-decoration:underline}
+
+/* ── INFO ROWS ── */
+.info-row{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);align-items:flex-start;font-size:.85rem}
+.info-row:last-child{border-bottom:none}
+.info-label{font-weight:600;color:var(--text);min-width:130px;flex-shrink:0}
+.info-val{color:var(--text);flex:1;line-height:1.4}
+.info-val a{color:var(--mid);text-decoration:none}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-left:4px}
+.badge-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn)}
+.badge-info{background:var(--info-bg);color:var(--info);border:1px solid var(--info)}
+.badge-ok{background:#F0FBF4;color:var(--green);border:1px solid var(--green)}
+
+/* ── ALERT BOXES ── */
+.box-warn{background:var(--warn-bg);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:.83rem;color:var(--warn);line-height:1.5}
+.box-tip{background:var(--info-bg);border-left:3px solid var(--info);border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:.83rem;color:var(--info);line-height:1.5}
+
+/* ── ACTION BUTTONS ── */
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;font-size:.75rem;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-map{background:var(--info-bg);color:var(--info);border:1px solid var(--info)}
+.btn-map:hover{background:var(--info);color:var(--white)}
+.btn-call{background:#F0FBF4;color:var(--green);border:1px solid var(--green)}
+.btn-call:hover{background:var(--green);color:#fff}
+.btn-nav{background:var(--bg2);color:var(--accent);border:1px solid var(--accent)}
+.btn-nav:hover{background:var(--accent);color:#fff}
+
+/* ── CHECKLIST ── */
+.checklist{list-style:none}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.85rem;line-height:1.4;cursor:pointer;transition:opacity .2s}
+.checklist li.done{opacity:.45;text-decoration:line-through}
+.checklist li input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--accent);cursor:pointer}
+.checklist-section{margin-bottom:14px}
+.checklist-section h4{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+
+/* ── PLANNING ── */
+.planning-grid{display:flex;flex-direction:column;gap:6px}
+.plan-day{border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.plan-day-header{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--dark);color:var(--bg)}
+.plan-day-date{font-size:.75rem;font-weight:600;letter-spacing:.05em;min-width:70px}
+.plan-day-type{font-size:.85rem}
+.plan-day-body{padding:8px 12px;font-size:.83rem;background:var(--bg2);line-height:1.4}
+
+/* ── WEATHER STRIP ── */
+.weather-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.weather-card{background:var(--dark);border-radius:8px;padding:12px;text-align:center;color:var(--bg)}
+.weather-val{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:400;color:var(--accent)}
+.weather-label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,250,248,.5);margin-top:2px}
+
+/* ── MAPS PLACEHOLDER ── */
+.map-placeholder{border:2px dashed var(--border);border-radius:10px;padding:28px 20px;text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:10px}
+.map-placeholder .map-ico{font-size:2rem;margin-bottom:8px}
+.map-placeholder strong{display:block;color:var(--text);margin-bottom:4px;font-size:.9rem}
+
+
+/* ── PAGE TITLE ── */
+.page-header{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent)}
+.page-header-ico{font-size:1.4rem;line-height:1}
+.page-header-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;color:var(--dark);letter-spacing:0.01em}
+
+/* ── BACK TO TOP ── */
+.back-top{position:fixed;right:16px;bottom:20px;width:36px;height:36px;border-radius:50%;background:var(--dark);color:var(--bg);border:none;cursor:pointer;font-size:1rem;display:none;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:99;transition:opacity .2s}
+.back-top.visible{display:flex}
+
+/* ── DARK MODE TOGGLE ── */
+
+
+/* ── MÉTÉO TEMPS RÉEL ── */
+.meteo-live{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.meteo-live-card{background:var(--dark);border-radius:8px;padding:12px 10px;text-align:center;color:var(--bg);position:relative}
+.meteo-live-val{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:var(--accent);line-height:1}
+.meteo-live-label{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,250,248,.5);margin-top:3px}
+.meteo-live-sub{font-size:.72rem;color:rgba(250,250,248,.6);margin-top:2px}
+.meteo-loading{opacity:.4;font-size:.8rem;text-align:center;padding:16px;color:var(--muted)}
+.meteo-forecast{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:12px}
+.meteo-forecast::-webkit-scrollbar{display:none}
+.meteo-day{flex:0 0 auto;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;text-align:center;min-width:66px}
+.meteo-day-date{font-size:.65rem;font-weight:600;color:var(--dark);margin-bottom:4px}
+.meteo-day-ico{font-size:1.2rem;margin-bottom:2px}
+.meteo-day-temp{font-size:.78rem;font-weight:600;color:var(--text)}
+.meteo-day-rain{font-size:.65rem;color:var(--info)}
+.meteo-update{font-size:.65rem;color:var(--muted);text-align:right;margin-top:4px}
+
+/* ── MARÉES ── */
+.maree-day{margin-bottom:8px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.maree-day-header{background:var(--dark);color:var(--bg);padding:6px 12px;font-size:.78rem;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.maree-day-body{display:grid;grid-template-columns:repeat(2,1fr);gap:0}
+.maree-item{padding:7px 10px;font-size:.8rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.maree-item:nth-child(2n){border-right:none}
+.maree-item:nth-last-child(-n+2){border-bottom:none}
+.maree-type{font-weight:600;font-size:.7rem;letter-spacing:.05em}
+.maree-type.bm{color:var(--info)}
+.maree-type.bpm{color:var(--accent)}
+.maree-coef{display:inline-block;background:var(--bg2);border-radius:10px;padding:1px 7px;font-size:.65rem;font-weight:600;margin-left:4px}
+
+/* ── NOTES PLANNING ── */
+.plan-note{width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:.82rem;font-family:'Inter',sans-serif;background:var(--bg2);color:var(--text);resize:vertical;min-height:52px;margin-top:6px;transition:border-color .2s}
+.plan-note:focus{outline:none;border-color:var(--accent)}
+.plan-note-saved{font-size:.65rem;color:var(--green);margin-top:2px;display:none}
+.plan-note-saved.show{display:block}
+
+/* ── BUDGET ── */
+.budget-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.budget-box{background:var(--dark);border-radius:8px;padding:12px 10px;text-align:center;color:var(--bg)}
+.budget-box-val{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--accent)}
+.budget-box-label{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(250,250,248,.5);margin-top:2px}
+.budget-form{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.budget-form input,.budget-form select{flex:1;min-width:100px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:.82rem;background:var(--bg2);color:var(--text);font-family:'Inter',sans-serif}
+.budget-form input:focus,.budget-form select:focus{outline:2px solid var(--accent)}
+.budget-add-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.budget-add-btn:hover{background:var(--dark)}
+.budget-entry{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.budget-entry-left{display:flex;flex-direction:column;gap:1px}
+.budget-entry-cat{font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.budget-entry-amount{font-weight:600;color:var(--text);white-space:nowrap}
+.budget-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:2px 6px;border-radius:4px}
+.budget-del:hover{color:var(--warn);background:var(--warn-bg)}
+.budget-reset{background:none;border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.72rem;color:var(--muted);cursor:pointer}
+
+/* ── SEARCH ── */
+.search-bar{display:flex;gap:8px;margin-bottom:14px}
+.search-bar input{flex:1;padding:9px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif}
+.search-bar input:focus{outline:2px solid var(--accent)}
+
+/* ── CHECKLIST EDIT MODE ── */
+.cl-edit-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem;color:var(--muted);cursor:pointer;transition:all .2s}
+.cl-edit-toggle.active{border-color:var(--accent);color:var(--accent);background:rgba(200,145,74,.08)}
+.checklist li .cl-del{display:none;background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem;padding:0 4px;margin-left:auto;flex-shrink:0;border-radius:4px;line-height:1}
+.checklist li .cl-del:hover{color:var(--warn);background:var(--warn-bg)}
+body.cl-editing .checklist li .cl-del{display:inline-flex;align-items:center}
+body.cl-editing .checklist li{cursor:default}
+body.cl-editing .checklist li input[type=checkbox]{pointer-events:none;opacity:.5}
+.cl-add-row{display:none;gap:6px;margin-top:6px;align-items:center}
+body.cl-editing .cl-add-row{display:flex}
+.cl-add-row.cl-add-always{display:flex}
+.cl-add-input{flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:.82rem;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}
+.cl-add-input:focus{outline:2px solid var(--accent)}
+.cl-add-btn{padding:6px 12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.cl-add-btn:hover{background:var(--dark)}
+
+/* ── RESPONSIVE ── */
+@media(min-width:600px){
+  .section{padding:calc(var(--bottom-h) + 16px) 24px 24px}
+  .info-label{min-width:160px}
+  .hero{height:260px}
+  .hero-title{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div style="width:38px"></div>
+  <div style="text-align:center">
+    <div class="topbar-title">La Rochelle 2026</div>
+    <span class="topbar-section" id="topbar-section">Accueil</span>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- NAV BACKDROP -->
+<div class="nav-backdrop" id="navBackdrop" onclick="closeNav()"></div>
+
+<!-- NAV PANEL -->
+<nav class="nav-panel" id="navPanel">
+  <div class="nav-grid">
+    <div class="nav-grid-item active" data-sec="accueil" onclick="showSection('accueil')"><span class="nav-ico">🏠</span>Accueil</div>
+    <div class="nav-grid-item" data-sec="camp" onclick="showSection('camp')"><span class="nav-ico">🏕</span>Camp</div>
+    <div class="nav-grid-item" data-sec="cartes" onclick="showSection('cartes')"><span class="nav-ico">🗺</span>Cartes</div>
+    <div class="nav-grid-item" data-sec="infos" onclick="showSection('infos')"><span class="nav-ico">🚨</span>Infos</div>
+    <div class="nav-grid-item" data-sec="transport" onclick="showSection('transport')"><span class="nav-ico">🚌</span>Transport</div>
+    <div class="nav-grid-item" data-sec="courses" onclick="showSection('courses')"><span class="nav-ico">🛒</span>Courses</div>
+    <div class="nav-grid-item" data-sec="plages" onclick="showSection('plages')"><span class="nav-ico">🏖</span>Plages</div>
+    <div class="nav-grid-item" data-sec="activites" onclick="showSection('activites')"><span class="nav-ico">🎡</span>Activités</div>
+    <div class="nav-grid-item" data-sec="restos" onclick="showSection('restos')"><span class="nav-ico">🍽</span>Restos</div>
+    <div class="nav-grid-item" data-sec="marches" onclick="showSection('marches')"><span class="nav-ico">🧺</span>Marchés</div>
+    <div class="nav-grid-item" data-sec="planb" onclick="showSection('planb')"><span class="nav-ico">🌧</span>Plan B</div>
+    <div class="nav-grid-item" data-sec="meteo" onclick="showSection('meteo')"><span class="nav-ico">🌤</span>Météo</div>
+    <div class="nav-grid-item" data-sec="checklist" onclick="showSection('checklist')"><span class="nav-ico">✅</span>Check</div>
+    <div class="nav-grid-item" data-sec="planning" onclick="showSection('planning')"><span class="nav-ico">🗓</span>Planning</div>
+    <div class="nav-grid-item" data-sec="budget" onclick="showSection('budget')"><span class="nav-ico">💰</span>Budget</div>
+  </div>
+</nav>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="scrollToTop()" title="Retour en haut">↑</button>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ACCUEIL -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section active" id="accueil">
+    <div class="hero">
+    <img src="aquitaine-la-rochelle.jpg" alt="Vieux-Port de La Rochelle" onerror="this.style.display='none';this.parentNode.style.background='#1A3A4A'">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Carnet de voyage</div>
+      <div class="hero-title">La Rochelle</div>
+      <div class="hero-meta">Papa &amp; Éléa · 4 → 16 juillet 2026 · 12 nuits</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏕 Camp de base</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Camping</td><td>Au Port de L'Houmeau</td></tr>
+      <tr><td>Adresse</td><td>4 Rue des Sartiéres, 17137 L'Houmeau</td></tr>
+      <tr><td>Téléphone</td><td><a href="tel:+33548220049">05 48 22 00 49</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Camping+Au+Port+de+L'Houmeau,+4+Rue+des+Sartieres,+17137+L'Houmeau" target="_blank">📍 Google Maps</a>
+      <a class="btn btn-call" href="tel:+33548220049">📞 Appeler</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=4+Rue+des+Sartieres,+17137+L'Houmeau&dirflg=d" target="_blank">🧭 Itinéraire</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CAMP DE BASE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="camp">
+  <div class="page-header"><span class="page-header-ico">🏕</span><span class="page-header-title">Camp de base</span></div>
+    <div class="card">
+    <div class="card-title">🏕 Camping Au Port de L'Houmeau</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Adresse</td><td>4 Rue des Sartiéres, 17137 L'Houmeau</td></tr>
+      <tr><td>Téléphone</td><td><a href="tel:+33548220049">05 48 22 00 49</a></td></tr>
+      <tr><td>Email</td><td>auport@larmateurdusoleil.fr</td></tr>
+      <tr><td>Site web</td><td><a href="https://campingauport.com" target="_blank">campingauport.com</a></td></tr>
+      <tr><td>Réception</td><td>9h – 19h · 7j/7 (juillet–août)</td></tr>
+      <tr><td>GPS</td><td>46.19672, -1.18711</td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=46.19672,-1.18711" target="_blank">📍 Google Maps</a>
+      <a class="btn btn-call" href="tel:+33548220049">📞 Appeler</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=46.19672,-1.18711&dirflg=d" target="_blank">🧭 Itinéraire depuis ma position</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚙️ Services disponibles</div>
+    <table class="tbl">
+      <tr><th>Service</th><th>Détail</th></tr>
+      <tr><td>🏊 Piscine</td><td>Chauffée · Toboggan · Pataugeoire · Jacuzzi</td></tr>
+      <tr><td>🍽 Snack-bar</td><td>Restaurant / Bar · Ouvert en saison</td></tr>
+      <tr><td>🧺 Laverie</td><td>Sur site · Sèche-linge disponible</td></tr>
+      <tr><td>📶 WiFi</td><td>Gratuit sur tout le site</td></tr>
+      <tr><td>🚲 Vélos</td><td>Location · Disponible avril–septembre</td></tr>
+      <tr><td>🛍 Boutique</td><td>Produits locaux charentais</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎤 Soirées juillet 2026</div>
+    <table class="tbl">
+      <tr><th>Date</th><th>Artiste</th></tr>
+      <tr><td>17 juillet</td><td>Moussier Tombola</td></tr>
+      <tr><td>22 juillet</td><td>Arno Santamaria</td></tr>
+      <tr><td>29 juillet</td><td>Pedro Castano</td></tr>
+      <tr><td>5 août</td><td>Didier Gustin</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌿 Environnement immédiat</div>
+    <table class="tbl">
+      <tr><th>Lieu</th><th>Distance</th><th>Actions</th></tr>
+      <tr><td>Anse de Pampin</td><td>800 m</td><td><a class="btn btn-map" href="https://maps.google.com/?q=Anse+de+Pampin,+L'Houmeau" target="_blank">📍</a> <a class="btn btn-nav" href="https://maps.google.com/?daddr=Anse+de+Pampin,+L'Houmeau&dirflg=w" target="_blank">🚶</a></td></tr>
+      <tr><td>Port du Plomb</td><td>2,4 km</td><td><a class="btn btn-map" href="https://maps.google.com/?q=Port+du+Plomb,+L'Houmeau" target="_blank">📍</a> <a class="btn btn-nav" href="https://maps.google.com/?daddr=Port+du+Plomb,+L'Houmeau&dirflg=d" target="_blank">🧭</a></td></tr>
+      <tr><td>Marais de Pampin</td><td>10 min à pied</td><td><a class="btn btn-map" href="https://maps.google.com/?q=Marais+de+Pampin,+L'Houmeau" target="_blank">📍</a></td></tr>
+      <tr><td>Village L'Houmeau</td><td>400 m</td><td><a class="btn btn-map" href="https://maps.google.com/?q=Place+du+14+Juillet,+L'Houmeau" target="_blank">📍</a></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CARTES & PLANS -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="cartes">
+  <div class="page-header"><span class="page-header-ico">🗺</span><span class="page-header-title">Cartes & Plans</span></div>
+    <div class="card">
+    <div class="card-title">🗺 Cartes & Plans</div>
+    <div class="box-tip">Cette section sera complétée avec vos propres plans. Trois emplacements sont réservés ci-dessous.</div>
+  </div>
+
+  <div class="card">
+    <div class="map-placeholder">
+      <div class="map-ico">🏕</div>
+      <strong>Plan du camping</strong>
+      Insérer ici le plan détaillé du Camping Au Port de L'Houmeau<br>(zones mobil-homes, piscine, services...)
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=46.19672,-1.18711" target="_blank">📍 Voir sur Google Maps</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=46.19672,-1.18711&dirflg=d" target="_blank">🧭 Itinéraire</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="map-placeholder">
+      <div class="map-ico">🏘</div>
+      <strong>Plan du village de L'Houmeau</strong>
+      Insérer ici le plan de L'Houmeau avec les points d'intérêt<br>(commerces, plages, marais, restaurants...)
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=L'Houmeau,+17137" target="_blank">📍 Voir sur Google Maps</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=L'Houmeau,+17137&dirflg=d" target="_blank">🧭 Itinéraire</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="map-placeholder">
+      <div class="map-ico">🏙</div>
+      <strong>Plan de La Rochelle</strong>
+      Insérer ici la carte de La Rochelle avec tous les sites à visiter<br>(Vieux-Port, musées, plages, parkings...)
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=La+Rochelle,+17000" target="_blank">📍 Voir sur Google Maps</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=La+Rochelle,+17000&dirflg=d" target="_blank">🧭 Itinéraire</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- INFOS PRATIQUES -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="infos">
+  <div class="page-header"><span class="page-header-ico">🚨</span><span class="page-header-title">Infos pratiques</span></div>
+
+  <div class="card">
+    <div class="card-title">🚨 Numéros d'urgence</div>
+    <table class="tbl">
+      <tr><th>Numéro</th><th>Service</th><th>Appel</th></tr>
+      <tr><td>15</td><td>SAMU</td><td><a href="tel:15" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>18</td><td>Pompiers</td><td><a href="tel:18" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>17</td><td>Police</td><td><a href="tel:17" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>112</td><td>Urgences européen</td><td><a href="tel:112" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>116 117</td><td>Permanence des soins</td><td><a href="tel:116117" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>3237</td><td>Pharmacie de garde</td><td><a href="tel:3237" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>3624</td><td>SOS Médecins La Rochelle</td><td><a href="tel:3624" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+      <tr><td>05 46 45 50 50</td><td>Hôpital Saint-Louis</td><td><a href="tel:+33546455050" class="btn btn-call" style="padding:3px 10px">📞</a></td></tr>
+    </table>
+  </div>
+
+
+  <div class="card">
+    <div class="card-title">💊 Pharmacies</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Nom</th><th>Tél.</th><th>Maps</th></tr>
+      <tr><td>0,4 km</td><td>Pharmacie de L'Houmeau</td><td><a href="tel:+33546509682">05 46 50 96 82</a></td><td><a href="https://maps.google.com/?q=Pharmacie+de+L'Houmeau,+Place+du+14+Juillet,+17137" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3 km</td><td>Pharmacie du Grand Large</td><td><a href="tel:+33546378365">05 46 37 83 65</a></td><td><a href="https://maps.google.com/?q=Pharmacie+du+Grand+Large,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3,2 km</td><td>Pharmacie Nouvelle</td><td><a href="tel:+33546374067">05 46 37 40 67</a></td><td><a href="https://maps.google.com/?q=Pharmacie+Nouvelle,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3,5 km</td><td>Pharmacie Duprat</td><td><a href="tel:+33546425259">05 46 42 52 59</a></td><td><a href="https://maps.google.com/?q=Pharmacie+Duprat,+93+Avenue+des+Guiardes,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5 km</td><td>Phcie Fauvel</td><td><a href="tel:+33546340814">05 46 34 08 14</a></td><td><a href="https://maps.google.com/?q=Pharmacie+Fauvel,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5,2 km</td><td>Phcie Pin Mansière</td><td><a href="tel:+33546676572">05 46 67 65 72</a></td><td><a href="https://maps.google.com/?q=Pharmacie+du+Pin+Mansiere,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5,5 km</td><td>Phcie Port-Neuf</td><td><a href="tel:+33546437321">05 46 43 73 21</a></td><td><a href="https://maps.google.com/?q=1+Place+de+l'ile+de+France,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>6 km</td><td>Phcie Port Atlantique</td><td><a href="tel:+33546425190">05 46 42 51 90</a></td><td><a href="https://maps.google.com/?q=10+Boulevard+Marechal+Lyautey,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>7,5 km</td><td>Phcie du Minage</td><td><a href="tel:+33546412871">05 46 41 28 71</a></td><td><a href="https://maps.google.com/?q=1+Rue+du+Cordouan,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>8 km</td><td>Phcie du Palais</td><td><a href="tel:+33546410752">05 46 41 07 52</a></td><td><a href="https://maps.google.com/?q=38+Rue+du+Palais,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🐾 Vétérinaires</div>
+    <div class="box-warn">Urgences vétérinaires 24h/24 : AniCura Saint-Roch — 05 46 27 16 02</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><th>Dist.</th><th>Nom</th><th>Tél.</th><th>Maps</th></tr>
+      <tr><td>~1 km</td><td>VET4CARE Dr de Nazelle<br><small style="color:var(--muted)">Ostéopathie · L'Houmeau</small></td><td><a href="tel:+33651714214">06 51 71 42 14</a></td><td><a href="https://maps.google.com/?q=10+Rue+de+la+Rochelle,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~3 km</td><td>Dr Marc Genty<br><small style="color:var(--muted)">Urgences soirée · Dim 14h–16h</small></td><td><a href="tel:+33546373451">05 46 37 34 51</a></td><td><a href="https://maps.google.com/?q=CC+Moulin+des+Chenes+Verts,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~5 km</td><td>Clinique des Greffières<br><small style="color:var(--muted)">Lagord</small></td><td><a href="tel:+33546431140">05 46 43 11 40</a></td><td><a href="https://maps.google.com/?q=24+Rue+des+Greffieres,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~5 km</td><td>Clinique Vendôme<br><small style="color:var(--muted)">Lagord</small></td><td><a href="tel:+33546284697">05 46 28 46 97</a></td><td><a href="https://maps.google.com/?q=51+Avenue+de+Lagord+Vendome,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~7 km</td><td>AniCura Saint-Roch 🚨<br><small style="color:var(--warn)">Urgences 24h/24</small></td><td><a href="tel:+33546271602">05 46 27 16 02</a></td><td><a href="https://maps.google.com/?q=18+Rue+de+Dompierre,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~8 km</td><td>Clinique de la Genette</td><td><a href="tel:+33546424344">05 46 42 43 44</a></td><td><a href="https://maps.google.com/?q=270+Avenue+Jean+Guiton,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~8 km</td><td>Dr Wittersheim</td><td><a href="tel:+33546072095">05 46 07 20 95</a></td><td><a href="https://maps.google.com/?q=28+Rue+Thiers,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>~9 km</td><td>Dr Karine Dion<br><small style="color:var(--muted)">Visites à domicile</small></td><td><a href="tel:+33670766687">06 70 76 66 87</a></td><td><a href="https://maps.google.com/?q=52+Rue+Emile+Racaud,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏥 Santé spécifique été</div>
+    <table class="tbl">
+      <tr><th>Risque</th><th>Précautions</th></tr>
+      <tr><td>🦟 Moustique tigre</td><td>Répulsif enfant obligatoire · Pique en journée · Vider les eaux stagnantes</td></tr>
+      <tr><td>🕷 Tiques</td><td>Tire-tique dans la trousse · Inspecter Éléa après chaque balade (tête, cou, aisselles)</td></tr>
+      <tr><td>🪼 Méduses</td><td>Rincer à l'eau de mer + bord de carte bancaire · Jamais d'eau douce</td></tr>
+      <tr><td>☀️ Soleil</td><td>Crème 50+ obligatoire · Le vent masque la chaleur</td></tr>
+      <tr><td>🏊 Hydrocution</td><td>20–30 min après le repas · Entrer progressivement dans l'eau</td></tr>
+      <tr><td>⛵ Croisière</td><td>Antiémétique à emporter — mer parfois agitée</td></tr>
+    </table>
+  </div>
+
+
+  <div class="card">
+    <div class="card-title">📞 Contacts utiles</div>
+    <table class="tbl">
+      <tr><th>Contact</th><th>Coordonnées</th></tr>
+      <tr><td>Office de tourisme</td><td><a href="tel:+33546411468">05 46 41 14 68</a> · <a href="https://larochelle-tourisme.com" target="_blank">larochelle-tourisme.com</a></td></tr>
+      <tr><td>Camping</td><td><a href="tel:+33548220049">05 48 22 00 49</a> · <a href="https://campingauport.com" target="_blank">campingauport.com</a></td></tr>
+      <tr><td>Yélo (bus)</td><td><a href="tel:+33810171819">0810 17 18 17</a> · <a href="https://yelo.agglo-larochelle.fr" target="_blank">yelo.agglo-larochelle.fr</a></td></tr>
+      <tr><td>Parkings temps réel</td><td><a href="https://parkinglarochelle.fr" target="_blank">parkinglarochelle.fr</a></td></tr>
+      <tr><td>Pont Île de Ré trafic</td><td><a href="https://pont-iledere.fr" target="_blank">pont-iledere.fr</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💳 Chèques vacances ANCV</div>
+    <table class="tbl">
+      <tr><th>Établissement</th><th>Usage</th></tr>
+      <tr><td>Camping Au Port de L'Houmeau</td><td>Séjour</td></tr>
+      <tr><td>Aquarium de La Rochelle</td><td>Entrées</td></tr>
+      <tr><td>Croisières Navipromer & Inter-Îles</td><td>Billets</td></tr>
+      <tr><td>Zoo de La Palmyre</td><td>Entrées</td></tr>
+      <tr><td>Tours de La Rochelle</td><td>Entrées</td></tr>
+      <tr><td>Bunker de La Rochelle</td><td>Entrées</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CHECKLIST -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="checklist">
+  <div class="page-header"><span class="page-header-ico">✅</span><span class="page-header-title">Check-list</span></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:.85rem;color:var(--muted)" id="check-progress">0 / 0 coché</span>
+      <div style="display:flex;gap:8px">
+        <button id="cl-edit-btn" class="cl-edit-toggle" onclick="toggleEditMode()">✏️ Éditer</button>
+        <button onclick="resetChecklist()" style="background:none;border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem;color:var(--muted);cursor:pointer">Réinitialiser</button>
+      </div>
+    </div>
+
+    <div class="checklist-section">
+      <h4>🏖 Plage & mer</h4>
+      <ul class="checklist" id="cl-plage">
+        <li><input type="checkbox" onchange="saveCheck(this)"> Crème solaire indice 50+ (grande quantité)<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Chapeau / casquette pour Éléa<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> T-shirt anti-UV enfant<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Lunettes de soleil (adulte + enfant)<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Chaussures à l'eau<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Bouées / brassards Éléa<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Seau, pelle, râteau plage<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Serviettes microfibre<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Glacière souple + blocs de glace<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+      </ul>
+      <div class="cl-add-row"><input class="cl-add-input" type="text" placeholder="Ajouter un élément…"><button class="cl-add-btn" onclick="addItem(this,'cl-plage')">+ Ajouter</button></div>
+    </div>
+
+    <div class="checklist-section">
+      <h4>🏥 Trousse de secours</h4>
+      <ul class="checklist" id="cl-soin">
+        <li><input type="checkbox" onchange="saveCheck(this)"> Crème antihistaminique<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Tire-tique<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Désinfectant<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Pansements variés<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Thermomètre<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Paracétamol adulte + enfant<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Ibuprofène adulte<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Antiémétique (croisière !)<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Sérum physiologique<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Crème après-soleil<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Anti-moustique adapté enfant<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+      </ul>
+      <div class="cl-add-row"><input class="cl-add-input" type="text" placeholder="Ajouter un élément…"><button class="cl-add-btn" onclick="addItem(this,'cl-soin')">+ Ajouter</button></div>
+    </div>
+
+    <div class="checklist-section">
+      <h4>📋 Documents</h4>
+      <ul class="checklist" id="cl-doc">
+        <li><input type="checkbox" onchange="saveCheck(this)"> Carte Vitale + attestation mutuelle<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Confirmation réservation camping<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Pièces d'identité<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Permis de conduire<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Carnet de santé d'Éléa<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Numéros urgence notés sur papier<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Chèques vacances ANCV<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+      </ul>
+      <div class="cl-add-row"><input class="cl-add-input" type="text" placeholder="Ajouter un élément…"><button class="cl-add-btn" onclick="addItem(this,'cl-doc')">+ Ajouter</button></div>
+    </div>
+
+    <div class="checklist-section">
+      <h4>🧺 Camping & quotidien</h4>
+      <ul class="checklist" id="cl-camp">
+        <li><input type="checkbox" onchange="saveCheck(this)"> Linge de rechange 3 jours<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Sac à dos de balade<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Veste légère / polaire soirées<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Cape de pluie ou ciré<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Lampe frontale<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Adaptateur / multiprises<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Powerbank chargé<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Sac réutilisable marché<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Jumelles (marais de Pampin)<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+      </ul>
+      <div class="cl-add-row"><input class="cl-add-input" type="text" placeholder="Ajouter un élément…"><button class="cl-add-btn" onclick="addItem(this,'cl-camp')">+ Ajouter</button></div>
+    </div>
+
+    <div class="checklist-section">
+      <h4>📱 Téléphone — Apps à installer</h4>
+      <ul class="checklist" id="cl-app">
+        <li><input type="checkbox" onchange="saveCheck(this)"> Google Maps hors ligne — télécharger la zone<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Yélo (bus La Rochelle)<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Météo France<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Windy<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Maree.info<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Terra Aventura<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+        <li><input type="checkbox" onchange="saveCheck(this)"> Flowbird (parkings)<button class="cl-del" onclick="deleteItem(this)">✕</button></li>
+      </ul>
+      <div class="cl-add-row"><input class="cl-add-input" type="text" placeholder="Ajouter un élément…"><button class="cl-add-btn" onclick="addItem(this,'cl-app')">+ Ajouter</button></div>
+    </div>
+
+    <div class="checklist-section">
+      <h4>📌 Divers</h4>
+      <ul class="checklist" id="cl-divers"></ul>
+      <div class="cl-add-row cl-add-always"><input class="cl-add-input" type="text" placeholder="Ajouter un élément…"><button class="cl-add-btn" onclick="addItem(this,'cl-divers')">+ Ajouter</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌊 Sécurité plage — Les baïnes</div>
+    <div class="box-warn">⚠️ Une baïne = zone d'eau calme entre les vagues. Courant pouvant emporter un nageur en moins de 2 minutes.</div>
+    <div style="height:8px"></div>
+    <div class="box-warn">Périodes dangereuses : 2e–3e heure marée montante · 4e–5e heure marée descendante</div>
+    <div style="height:8px"></div>
+    <div class="box-tip">Si pris dans le courant : ne pas lutter · Nager latéralement · Faire signe aux secours · Se baigner uniquement entre drapeaux jaune et rouge</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TRANSPORT -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="transport">
+  <div class="page-header"><span class="page-header-ico">🚌</span><span class="page-header-title">Se déplacer</span></div>
+    <div class="card">
+    <div class="card-title">🚌 Réseau Yélo — Bus</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Ligne 10</td><td>L'Houmeau → Place de Verdun La Rochelle (~25 min)</td></tr>
+      <tr><td>Ticket Tribu P+R</td><td>5 € · 1 à 5 personnes · Valable toute la journée</td></tr>
+      <tr><td>P+R Lagord</td><td>Gratuit · Bus toutes les 10 min</td></tr>
+      <tr><td>⚠️ P+R Vieljeux</td><td>Fermé jusqu'en 2027 (travaux)</td></tr>
+      <tr><td>Contact</td><td><a href="tel:+33810171819">0810 17 18 17</a> · <a href="https://yelo.agglo-larochelle.fr" target="_blank">yelo.agglo-larochelle.fr</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Parking+Relais+Lagord,+Lagord" target="_blank">📍 P+R Lagord</a>
+      <a class="btn btn-call" href="tel:+33810171819">📞 Yélo</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🅿️ Stationnement La Rochelle</div>
+    <div class="box-warn">Haute saison : seulement 30 min gratuites dans les parkings en enclos.</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><th>Parking</th><th>Tarif</th><th>Maps</th></tr>
+      <tr><td>P+R Lagord</td><td>Gratuit + bus</td><td><a href="https://maps.google.com/?q=Parking+Relais+Lagord,+Lagord,+17140" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Esplanade des Parcs</td><td>Gratuit</td><td><a href="https://maps.google.com/?q=Esplanade+des+Parcs,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Rue Chasseloup-Laubat</td><td>Gratuit</td><td><a href="https://maps.google.com/?q=Rue+Chasseloup-Laubat,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Port des Minimes</td><td>Gratuit</td><td><a href="https://maps.google.com/?q=Port+des+Minimes,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Parking Verdun</td><td>Payant · 557 places</td><td><a href="https://maps.google.com/?q=Parking+Verdun,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-nav" href="https://parkinglarochelle.fr" target="_blank">🔴 Disponibilités temps réel</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌉 Pont de l'Île de Ré</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Tarif haute saison</td><td>16 € aller-retour voiture (20/06–11/09)</td></tr>
+      <tr><td>Gratuit</td><td>Vélo · Piéton · Poussette</td></tr>
+      <tr><td>Conseil</td><td>Partir avant 9h ou après 19h en juillet</td></tr>
+      <tr><td>Info trafic</td><td><a href="https://pont-iledere.fr" target="_blank">pont-iledere.fr</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Pont+de+l'ile+de+Re,+La+Rochelle" target="_blank">📍 Pont de l'Île de Ré</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=Pont+de+l'ile+de+Re&dirflg=d" target="_blank">🧭 Itinéraire</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚲 Location de vélos</div>
+    <table class="tbl">
+      <tr><th>Loueur</th><th>Infos</th><th>Contact</th></tr>
+      <tr><td>Camping</td><td>Sur place · Avr–Sept</td><td><a href="tel:+33548220049" class="btn btn-call" style="padding:3px 8px">📞</a></td></tr>
+      <tr><td>Roul'Easy</td><td>Livraison domicile</td><td><a href="https://rouleasy.ouibike.net" target="_blank" class="btn btn-nav" style="padding:3px 8px">🌐</a></td></tr>
+      <tr><td>Beach Bikes</td><td>Livraison gratuite</td><td><a href="https://beachbikes.fr" target="_blank" class="btn btn-nav" style="padding:3px 8px">🌐</a></td></tr>
+      <tr><td>Île de Ré</td><td>Pack famille + remorque<br>85–120€/week-end · Réserver 2 sem. avant</td><td>—</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- COURSES -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="courses">
+  <div class="page-header"><span class="page-header-ico">🛒</span><span class="page-header-title">Courses & quotidien</span></div>
+    <div class="card">
+    <div class="card-title">🛒 Supermarchés</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Enseigne</th><th>Maps</th></tr>
+      <tr><td>0,4 km</td><td>Coop L'Houmeau</td><td><a href="https://maps.google.com/?q=Coop,+Place+du+14+Juillet,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3 km</td><td>Super U Nieul-sur-Mer</td><td><a href="https://maps.google.com/?q=Super+U,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>4,5 km</td><td>ALDI Lagord</td><td><a href="https://maps.google.com/?q=ALDI,+15+Avenue+du+Fief+Rose,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>4,7 km</td><td>E.Leclerc Lagord</td><td><a href="https://maps.google.com/?q=Leclerc,+Avenue+du+Fief+Rose,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5,5 km</td><td>Lidl Lagord</td><td><a href="https://maps.google.com/?q=Lidl,+Rue+du+Moulin+de+Vendome,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>8,5 km</td><td>E.Leclerc Sautel</td><td><a href="https://maps.google.com/?q=Leclerc,+124+Boulevard+Andre+Sautel,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⛽ Stations-service</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Enseigne</th><th>Notes</th><th>Maps</th></tr>
+      <tr><td>3,1 km</td><td>TotalEnergies Nieul</td><td>—</td><td><a href="https://maps.google.com/?q=TotalEnergies,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>4,7 km</td><td>Leclerc Station Lagord</td><td>24h/24</td><td><a href="https://maps.google.com/?q=Station+Leclerc,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>4,9 km</td><td>AVIA Picoty</td><td>24h/24</td><td><a href="https://maps.google.com/?q=AVIA+Picoty,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5,9 km</td><td>AVIA La Rochelle</td><td>24h/24</td><td><a href="https://maps.google.com/?q=AVIA,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>8,6 km</td><td>Total Puiboreau</td><td>Aire N11</td><td><a href="https://maps.google.com/?q=Total,+Puilboreau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🥐 Boulangeries</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Nom</th><th>Horaires</th><th>Maps</th></tr>
+      <tr><td>0,4 km</td><td>Boulangerie Cator</td><td>Dès 7h</td><td><a href="https://maps.google.com/?q=Boulangerie+Cator,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3 km</td><td>Banette Lagord</td><td>Lun–Sam 6h30–19h30</td><td><a href="https://maps.google.com/?q=Banette,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3 km</td><td>Festival des Pains</td><td>—</td><td><a href="https://maps.google.com/?q=1+Avenue+de+la+Rochelle,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚬 Tabacs</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Nom</th><th>Maps</th></tr>
+      <tr><td>0,4 km</td><td>Tabac Presse Le Nolan</td><td><a href="https://maps.google.com/?q=Tabac+Le+Nolan,+Place+du+14+Juillet,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3,1 km</td><td>Le Pinson</td><td><a href="https://maps.google.com/?q=Tabac+Le+Pinson,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>3,6 km</td><td>Tabac Presse Loto</td><td><a href="https://maps.google.com/?q=93+Avenue+des+Guiardes,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5,3 km</td><td>Lagord Presse</td><td><a href="https://maps.google.com/?q=Tabac+Lagord+Presse,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧀 Spécialités locales à goûter</div>
+    <table class="tbl">
+      <tr><th>Spécialité</th><th>Description</th></tr>
+      <tr><td>🦪 Huîtres de Marennes</td><td>Au Port du Plomb · 5 min du camping</td></tr>
+      <tr><td>🐚 Moules de bouchot</td><td>Élevées sur les pieux du littoral</td></tr>
+      <tr><td>🥐 Galette charentaise</td><td>Biscuit brioché beurré</td></tr>
+      <tr><td>🧄 Préfou</td><td>Pain à l'ail et au beurre</td></tr>
+      <tr><td>🍲 Mouclade</td><td>Moules à la crème et au curry</td></tr>
+      <tr><td>🍈 Melon charentais</td><td>En saison dès juillet</td></tr>
+      <tr><td>🍷 Pineau des Charentes</td><td>Apéritif régional (pour papa 😄)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PLAGES -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="plages">
+  <div class="page-header"><span class="page-header-ico">🏖</span><span class="page-header-title">Plages & nature</span></div>
+
+  <div class="card">
+    <div class="card-title">🏖 Plages</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Plage</th><th>Notes</th><th>Maps</th></tr>
+      <tr><td>1,5 km</td><td>Anse de Pampin</td><td>Galets · Vue pont Île de Ré ✦</td><td><a href="https://maps.google.com/?q=Anse+de+Pampin,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>2,4 km</td><td>Port du Plomb</td><td>Huîtres · Ambiance</td><td><a href="https://maps.google.com/?q=Port+du+Plomb,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>6,2 km</td><td>Chef de Baie</td><td>Sable · Surveillée</td><td><a href="https://maps.google.com/?q=Plage+Chef+de+Baie,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>7,1 km</td><td>Plage de la Concurrence</td><td>Feu d'artifice 14/7</td><td><a href="https://maps.google.com/?q=Plage+de+la+Concurrence,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>7,6 km</td><td>Plage des Minimes</td><td>Grand port · Surveillée</td><td><a href="https://maps.google.com/?q=Plage+des+Minimes,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>8 km</td><td>Plage du Roux</td><td>Calme</td><td><a href="https://maps.google.com/?q=Plage+du+Roux,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="box-warn" style="margin-top:4px;margin-bottom:10px">🐕 Chiens interdits sur toutes les plages en haute saison (juin–septembre).</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ACTIVITÉS -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="activites">
+  <div class="page-header"><span class="page-header-ico">🎡</span><span class="page-header-title">Activités & sorties</span></div>
+  
+  <div class="card">
+    <div class="card-title">🐠 Aquarium de La Rochelle</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Tarifs</td><td>19,50€ adulte · Gratuit -3 ans · 12,50€ enfant 3–12 ans</td></tr>
+      <tr><td>Horaires été</td><td>Jusqu'à 23h en juillet–août</td></tr>
+      <tr><td>Téléphone</td><td><a href="tel:+33546340000">05 46 34 00 00</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Aquarium+de+La+Rochelle,+Quai+Louis+Prunier,+La+Rochelle" target="_blank">📍 Maps</a>
+      <a class="btn btn-call" href="tel:+33546340000">📞 Appeler</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=Aquarium+La+Rochelle,+Quai+Louis+Prunier&dirflg=d" target="_blank">🧭 Itinéraire</a>
+      <a class="btn btn-nav" href="https://aquarium-larochelle.com" target="_blank">🌐 Réserver en ligne</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🦁 Zoo de La Palmyre (~80 km)</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Tarifs</td><td>22€ adulte · 17€ enfant 3–12 ans · Gratuit -3 ans</td></tr>
+      <tr><td>Horaires</td><td>9h–19h (avril–septembre)</td></tr>
+      <tr><td>⚠️ Chiens</td><td>Non admis</td></tr>
+      <tr><td>Téléphone</td><td><a href="tel:+33546224606">05 46 22 46 06</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Zoo+de+La+Palmyre,+Les+Mathes" target="_blank">📍 Maps</a>
+      <a class="btn btn-nav" href="https://maps.google.com/?daddr=Zoo+de+La+Palmyre,+Les+Mathes&dirflg=d" target="_blank">🧭 Itinéraire</a>
+      <a class="btn btn-nav" href="https://zoo-palmyre.fr" target="_blank">🌐 Site officiel</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌊 Parcs aquatiques</div>
+    <table class="tbl">
+      <tr><th>Parc</th><th>Distance</th><th>Maps</th></tr>
+      <tr><td>Yaka-jouer</td><td>~25 km · Saint-Laurent-de-la-Prée</td><td><a href="https://maps.google.com/?q=Yaka-jouer,+Saint-Laurent-de-la-Pree" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Aquatic Center Iléo</td><td>~47 km · Dolus-d'Oléron</td><td><a href="https://maps.google.com/?q=Aquatic+Center+Ileo,+Dolus+d'Oleron" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⛵ Croisières Fort Boyard</div>
+    <table class="tbl">
+      <tr><th>Compagnie</th><th>Circuit</th><th>Tarifs</th><th>Contact</th></tr>
+      <tr><td>Navipromer</td><td>Fort Boyard 2h10</td><td>22€ adulte · 14€ enfant</td><td><a href="tel:+33608310462" class="btn btn-call" style="padding:3px 8px">📞</a> <a href="https://navipromer.com" target="_blank" class="btn btn-nav" style="padding:3px 8px">🌐</a></td></tr>
+      <tr><td>Inter-Îles</td><td>Fort Boyard + Île d'Aix</td><td>29€ adulte · 19€ enfant</td><td><a href="tel:+33546505554" class="btn btn-call" style="padding:3px 8px">📞</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Vieux-Port,+La+Rochelle" target="_blank">📍 Départ Vieux-Port</a>
+    </div>
+    <div class="box-tip">💡 Emporter un antiémétique — mer parfois agitée.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏝 Île de Ré avec Éléa</div>
+    <table class="tbl">
+      <tr><th>Infos</th><th>Détail</th></tr>
+      <tr><td>Pont</td><td>16€ AR voiture · Gratuit vélo/piéton</td></tr>
+      <tr><td>Plages tout-petits</td><td>Gros Jonc · Cible (St-Martin) · Conche des Baleines</td></tr>
+      <tr><td>Vélos + remorque</td><td>85–120€/week-end · Réserver 2 sem. avant</td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-map" href="https://maps.google.com/?q=Plage+Gros+Jonc,+Le+Bois-Plage-en-Re" target="_blank">📍 Gros Jonc</a>
+      <a class="btn btn-map" href="https://maps.google.com/?q=Plage+de+la+Cible,+Saint-Martin-de-Re" target="_blank">📍 Cible</a>
+      <a class="btn btn-map" href="https://maps.google.com/?q=Conche+des+Baleines,+Saint-Clement-des-Baleines" target="_blank">📍 Conche des Baleines</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏰 Visites culturelles</div>
+    <table class="tbl">
+      <tr><th>Site</th><th>Tarifs</th><th>Maps</th></tr>
+      <tr><td>Tours de La Rochelle<br><small>Tour St-Nicolas fermée</small></td><td>Payant</td><td><a href="https://maps.google.com/?q=Tours+de+La+Rochelle,+Place+de+la+Chaine" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Bunker de La Rochelle</td><td>7€ adulte · 5,50€ enfant</td><td><a href="https://maps.google.com/?q=Bunker+de+La+Rochelle,+8+Rue+des+Dames" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Muséum Histoire Naturelle</td><td>8€ adulte · Gratuit -18 ans</td><td><a href="https://maps.google.com/?q=Museum+Histoire+Naturelle,+28+Rue+Albert+1er,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Musée Maritime</td><td>Gratuit -18 ans</td><td><a href="https://maps.google.com/?q=Musee+Maritime,+Place+Bernard+Moitessier,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Parc Charruyer</td><td>Gratuit</td><td><a href="https://maps.google.com/?q=Parc+Charruyer,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌿 Balades nature</div>
+    <table class="tbl">
+      <tr><th>Balade</th><th>Durée</th><th>Maps</th></tr>
+      <tr><td>Sentier côtier L'Houmeau → Port du Plomb</td><td>~1h30</td><td><a href="https://maps.google.com/?q=Sentier+cotier,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Marais de Pampin</td><td>~1h · 3 km</td><td><a href="https://maps.google.com/?q=Marais+de+Pampin,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Terra Aventura "Les Perles du Plomb"</td><td>2–3h · 6,5 km</td><td><a href="https://maps.google.com/?q=Port+du+Plomb,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-nav" href="https://maree.info" target="_blank">🌊 Horaires des marées</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎆 14 juillet & Francofolies</div>
+    <table class="tbl">
+      <tr><th>Événement</th><th>Lieu</th><th>Maps</th></tr>
+      <tr><td>Feu d'artifice La Rochelle</td><td>Plage de la Concurrence · Allée des Tamarins · Vieux-Port</td><td><a href="https://maps.google.com/?q=Plage+de+la+Concurrence,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Francofolies — animations gratuites</td><td>Allée des festivaliers · Cours des Dames · 11h30–18h30</td><td><a href="https://maps.google.com/?q=Cours+des+Dames,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Feu Châtelaillon-Plage</td><td>13–14–15 juillet · Animaux acceptés</td><td><a href="https://maps.google.com/?q=Plage+de+Chatelaillon" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="card-title">📸 Spots photos incontournables</div>
+    <table class="tbl">
+      <tr><th>Lieu</th><th>Moment</th><th>Maps</th></tr>
+      <tr><td>Anse de Pampin</td><td>Coucher de soleil ~21h</td><td><a href="https://maps.google.com/?q=Anse+de+Pampin,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Port du Plomb</td><td>Fin d'après-midi</td><td><a href="https://maps.google.com/?q=Port+du+Plomb,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Vieux-Port La Rochelle</td><td>Matin (lumière dorée)</td><td><a href="https://maps.google.com/?q=Vieux-Port,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Marché des Halles</td><td>8h–9h</td><td><a href="https://maps.google.com/?q=Halles+de+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Île de Ré</td><td>N'importe quand</td><td><a href="https://maps.google.com/?q=Saint-Martin-de-Re" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- RESTAURANTS -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="restos">
+  <div class="page-header"><span class="page-header-ico">🍽</span><span class="page-header-title">Restaurants</span></div>
+    <div class="card">
+    <div class="card-title">🍽 Restaurants</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Nom</th><th>Type</th><th>Maps</th></tr>
+      <tr><td>0,2 km</td><td>Chez Pichette ⭐4.9</td><td>Brunch · Tapas · 20–30€</td><td><a href="https://maps.google.com/?q=Chez+Pichette,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>0,4 km</td><td>Briemm ⭐4.8</td><td>Gastronomique · 40–60€</td><td><a href="https://maps.google.com/?q=Briemm,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>0,5 km</td><td>A Bon Port ⭐4.5</td><td>Moules · Snack · 15–25€</td><td><a href="https://maps.google.com/?q=A+Bon+Port,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>2,1 km</td><td>La Passerelle ⭐4.3</td><td>Brasserie · 25–40€</td><td><a href="https://maps.google.com/?q=La+Passerelle,+Nieul-sur-Mer" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>2,4 km</td><td>Coquillages & Crustacés ⭐4.3</td><td>Fruits de mer · 30–50€</td><td><a href="https://maps.google.com/?q=Coquillages+et+Crustaces,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>2,5 km</td><td>Le Café de la Mer ⭐4.5</td><td>Vue mer · 25–40€</td><td><a href="https://maps.google.com/?q=Cafe+de+la+Mer,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>2,6 km</td><td>Huitres Lebon Cabane 135 ⭐5.0</td><td>Ostréiculteur · 20–35€</td><td><a href="https://maps.google.com/?q=Cabane+135+Huitres+Lebon,+L'Houmeau" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🍔 Fast-food</div>
+    <table class="tbl">
+      <tr><th>Dist.</th><th>Enseigne</th><th>Maps</th></tr>
+      <tr><td>4,9 km</td><td>McDonald's Lagord</td><td><a href="https://maps.google.com/?q=McDonald's,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>5,5 km</td><td>KFC Lagord</td><td><a href="https://maps.google.com/?q=KFC,+Lagord" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>6 km</td><td>Burger King Les Minimes</td><td><a href="https://maps.google.com/?q=Burger+King,+Les+Minimes,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MARCHÉS -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="marches">
+  <div class="page-header"><span class="page-header-ico">🧺</span><span class="page-header-title">Marchés</span></div>
+    <div class="card">
+    <div class="card-title">🧺 Marchés de La Rochelle</div>
+    <table class="tbl">
+      <tr><th>Marché</th><th>Jours</th><th>Horaires</th><th>Maps</th></tr>
+      <tr><td>Halles (couvert)</td><td>7j/7</td><td>8h–13h30</td><td><a href="https://maps.google.com/?q=Halles+de+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Grand marché extérieur</td><td>Mer + Sam</td><td>7h–13h30</td><td><a href="https://maps.google.com/?q=Halles+de+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Place de Verdun</td><td>Vendredi</td><td>13h30–19h30</td><td><a href="https://maps.google.com/?q=Place+de+Verdun,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>La Pallice</td><td>Dimanche</td><td>7h–13h30</td><td><a href="https://maps.google.com/?q=Marche+La+Pallice,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Port-Neuf</td><td>Jeudi</td><td>7h–13h30</td><td><a href="https://maps.google.com/?q=Place+Port-Neuf,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Tasdon</td><td>Mardi</td><td>7h–13h30</td><td><a href="https://maps.google.com/?q=Quartier+Tasdon,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Marché aux Puces</td><td>Mar · Jeu · Sam</td><td>8h30–19h</td><td><a href="https://maps.google.com/?q=Motte+Rouge,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Marché de la Création</td><td>Juil–Août 7j/7</td><td>11h–21h</td><td><a href="https://maps.google.com/?q=Vieux-Port,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+    <div class="box-tip">💡 Le samedi matin aux Halles avec Éléa est un incontournable — arriver avant 9h.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PLAN B -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="planb">
+  <div class="page-header"><span class="page-header-ico">🌧</span><span class="page-header-title">Plan B — Mauvais temps</span></div>
+    <div class="card">
+    <div class="card-title">☔ Activités couvertes</div>
+    <table class="tbl">
+      <tr><th>Activité</th><th>Éléa</th><th>Tarif</th><th>Maps</th></tr>
+      <tr><td>Aquarium</td><td>⭐ Idéal</td><td>19,50€ / gratuit</td><td><a href="https://maps.google.com/?q=Aquarium+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Muséum Hist. Nat.</td><td>⭐ Parfait</td><td>8€ / gratuit -18</td><td><a href="https://maps.google.com/?q=Museum+Histoire+Naturelle,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Musée des Automates</td><td>⭐ Excellent</td><td>À vérifier</td><td><a href="https://maps.google.com/?q=Musee+des+Automates,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Bunker La Rochelle</td><td>À partir de 5 ans</td><td>7€ / 5,50€</td><td><a href="https://maps.google.com/?q=Bunker+La+Rochelle,+8+Rue+des+Dames" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>Halles du marché</td><td>✅</td><td>Gratuit</td><td><a href="https://maps.google.com/?q=Halles+de+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>CGR Dragon</td><td>✅</td><td>~8–10€</td><td><a href="https://maps.google.com/?q=CGR+Dragon,+8+Cours+des+Dames,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+      <tr><td>CGR Les Minimes</td><td>✅</td><td>~8–10€</td><td><a href="https://maps.google.com/?q=CGR+Les+Minimes,+La+Rochelle" target="_blank" class="btn btn-map" style="padding:3px 8px">📍</a></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎬 Films pour Éléa (4 ans) — Juillet 2026</div>
+    <table class="tbl">
+      <tr><th>Film</th><th>Sortie</th><th>Âge</th></tr>
+      <tr><td>Kayara, princesse inca</td><td>15 juillet 2026</td><td><span class="badge badge-ok">dès 4 ans ✅</span></td></tr>
+      <tr><td>Vaiana live-action Disney</td><td>8 juillet 2026</td><td>Dès 6 ans — accessible accompagnée</td></tr>
+      <tr><td>Peppa au cinéma</td><td>Déjà à l'affiche</td><td><span class="badge badge-ok">dès 3 ans ✅</span></td></tr>
+      <tr><td>Toy Story 5</td><td>Déjà à l'affiche</td><td><span class="badge badge-ok">dès 4 ans ✅</span></td></tr>
+      <tr><td>Des Minions et des Monstres</td><td>Déjà à l'affiche</td><td><span class="badge badge-ok">dès 4 ans ✅</span></td></tr>
+      <tr><td>Nouveaux copains à Puffin Rock</td><td>Déjà à l'affiche</td><td><span class="badge badge-ok">dès 3 ans ✅</span></td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-nav" href="https://www.allocine.fr" target="_blank">🎬 Vérifier programme sur AlloCiné</a>
+      <a class="btn btn-call" href="tel:+33546414179">📞 CGR Dragon</a>
+      <a class="btn btn-call" href="tel:+33892688588">📞 CGR Minimes</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MÉTÉO -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="meteo">
+  <div class="page-header"><span class="page-header-ico">🌤</span><span class="page-header-title">Météo & infos pratiques</span></div>
+
+  <div id="meteo-live-block">
+    <div class="meteo-loading">⏳ Chargement de la météo en temps réel…</div>
+  </div>
+
+  <div id="meteo-forecast-block" style="display:none">
+    <div class="card">
+      <div class="card-title">📅 Prévisions 7 jours — La Rochelle</div>
+      <div class="meteo-forecast" id="meteo-forecast"></div>
+      <div class="meteo-update" id="meteo-update"></div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-title">🌊 Horaires des marées — 4–16 juillet 2026</div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Sam 4 juil.</span><span>Coeff. 65</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>03:41 — 0,4m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>10:10 — 5,8m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>16:08 — 0,5m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>22:35 — 5,7m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Dim 5 juil.</span><span>Coeff. 72</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>04:22 — 0,5m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>10:51 — 5,7m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>16:49 — 0,6m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>23:16 — 5,6m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Lun 6 juil.</span><span>Coeff. 78</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>05:05 — 0,6m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>11:34 — 5,5m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>17:33 — 0,8m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>23:58 — 5,4m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Mar 7 juil.</span><span>Coeff. 82</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>05:51 — 0,8m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>12:20 — 5,3m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>18:20 — 1,0m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Mer 8 juil.</span><span>Coeff. 84</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>00:44 — 5,2m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>06:42 — 1,0m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>13:11 — 5,1m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>19:14 — 1,2m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Jeu 9 juil.</span><span>Coeff. 83</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>01:35 — 5,0m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>07:38 — 1,2m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>14:09 — 5,0m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>20:16 — 1,3m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Ven 10 juil.</span><span>Coeff. 79</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>02:33 — 4,9m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>08:41 — 1,3m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>15:15 — 4,9m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>21:27 — 1,3m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Sam 11 juil.</span><span>Coeff. 73</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>03:37 — 4,9m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>09:49 — 1,3m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>16:24 — 5,0m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>22:40 — 1,2m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Dim 12 juil.</span><span>Coeff. 67</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>04:43 — 5,0m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>10:55 — 1,2m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>17:29 — 5,2m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>23:46 — 1,0m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Lun 13 juil.</span><span>Coeff. 62</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>05:45 — 5,2m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>11:56 — 1,0m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>18:27 — 5,4m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Mar 14 juil.</span><span>Coeff. 60</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>00:45 — 0,8m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>06:40 — 5,5m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>12:51 — 0,8m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>19:19 — 5,6m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Mer 15 juil.</span><span>Coeff. 61</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>01:38 — 0,7m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>07:30 — 5,7m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>13:41 — 0,7m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>20:06 — 5,8m</div>
+      </div>
+    </div>
+    <div class="maree-day">
+      <div class="maree-day-header"><span>Jeu 16 juil.</span><span>Coeff. 64</span></div>
+      <div class="maree-day-body">
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>02:28 — 0,6m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>08:17 — 5,8m</div>
+        <div class="maree-item"><span class="maree-type bm">Basse mer</span><br>14:29 — 0,6m</div>
+        <div class="maree-item"><span class="maree-type bpm">Pleine mer</span><br>20:51 — 5,9m</div>
+      </div>
+    </div>
+    <div class="meteo-update">Source : SHOM · Données indicatives · Toujours vérifier avant une sortie mer</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌤 Moyennes juillet La Rochelle</div>
+    <table class="tbl">
+      <tr><th>Indicateur</th><th>Valeur</th></tr>
+      <tr><td>Température min</td><td>18°C</td></tr>
+      <tr><td>Température max</td><td>24°C (pointes à 30°C)</td></tr>
+      <tr><td>Température mer</td><td>~19°C</td></tr>
+      <tr><td>Ensoleillement</td><td>~13,7h/jour</td></tr>
+      <tr><td>Jours pluvieux</td><td>~13% · ~4 jours sur 12</td></tr>
+      <tr><td>Vent moyen</td><td>20 km/h — masque la chaleur</td></tr>
+    </table>
+    <div class="btn-row">
+      <a class="btn btn-nav" href="https://meteofrance.com/previsions-meteo-france/la-rochelle/17000" target="_blank">🌤 Météo France</a>
+      <a class="btn btn-nav" href="https://www.windy.com/?47.0,-1.5,9" target="_blank">🌬 Windy — vent & mer</a>
+      <a class="btn btn-nav" href="https://maree.info" target="_blank">🌊 Horaires des marées</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PLANNING -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="planning">
+  <div class="page-header"><span class="page-header-ico">🗓</span><span class="page-header-title">Planning & Souvenirs</span></div>
+    <div class="planning-grid">
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Sam 4 juil.</span><span class="plan-day-type">🏕</span></div><div class="plan-day-body">Arrivée · Installation · Piscine du camping · Découverte du village</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="sam4" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-sam4">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Dim 5 juil.</span><span class="plan-day-type">🌿</span></div><div class="plan-day-body">Anse de Pampin à pied · Port du Plomb · Huîtres en bord de mer</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="dim5" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-dim5">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Lun 6 juil.</span><span class="plan-day-type">🏙</span></div><div class="plan-day-body">Marché des Halles La Rochelle (matin) + Parc Charruyer</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="lun6" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-lun6">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Mar 7 juil.</span><span class="plan-day-type">🏖</span></div><div class="plan-day-body">Journée plage + piscine camping · Francofolies en ville le soir</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="mar7" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-mar7">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Mer 8 juil.</span><span class="plan-day-type">🎵</span></div><div class="plan-day-body">Francofolies — animations gratuites allée des festivaliers · Vaiana en salle le soir ?</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="mer8" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-mer8">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Jeu 9 juil.</span><span class="plan-day-type">🐠</span></div><div class="plan-day-body">Aquarium de La Rochelle — réserver en ligne à l'avance</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="jeu9" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-jeu9">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Ven 10 juil.</span><span class="plan-day-type">🏖</span></div><div class="plan-day-body">Journée plage · Francofolies le soir (si billet pris)</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="ven10" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-ven10">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Sam 11 juil.</span><span class="plan-day-type">🦒</span></div><div class="plan-day-body">Grand marché extérieur des Halles + Muséum d'Histoire Naturelle</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="sam11" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-sam11">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Dim 12 juil.</span><span class="plan-day-type">⛵</span></div><div class="plan-day-body">Journée Île de Ré à vélo (remorque Éléa) · Saint-Martin + plage Cible</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="dim12" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-dim12">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Lun 13 juil.</span><span class="plan-day-type">🏕</span></div><div class="plan-day-body">Repos camping · Animations soirée au camping</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="lun13" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-lun13">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Mar 14 juil. 🎆</span><span class="plan-day-type">🇫🇷</span></div><div class="plan-day-body">Animations Francofolies gratuites + <strong>Feu d'artifice</strong> plage de la Concurrence</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="mar14" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-mar14">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Mer 15 juil.</span><span class="plan-day-type">⛵</span></div><div class="plan-day-body">Croisière Fort Boyard — Navipromer · Départ Vieux-Port · 2h10</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="mer15" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-mer15">✓ Sauvegardé</div></div></div>
+    <div class="plan-day"><div class="plan-day-header"><span class="plan-day-date">Jeu 16 juil.</span><span class="plan-day-type">🏠</span></div><div class="plan-day-body">Matinée libre · Retour</div>
+    <div style="padding:4px 12px 8px"><textarea class="plan-note" placeholder="📝 Notes du jour…" data-day="jeu16" oninput="saveNote(this)"></textarea><div class="plan-note-saved" id="saved-jeu16">✓ Sauvegardé</div></div></div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- BUDGET -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="budget">
+  <div class="page-header"><span class="page-header-ico">💰</span><span class="page-header-title">Budget du séjour</span></div>
+    <div class="card" style="margin-top:14px">
+    <div class="card-title">💰 Budget du séjour</div>
+    <div class="budget-summary">
+      <div class="budget-box"><div class="budget-box-val" id="bgt-total">0 €</div><div class="budget-box-label">Dépensé</div></div>
+      <div class="budget-box"><div class="budget-box-val" id="bgt-remain">280 €</div><div class="budget-box-label">Restant</div></div>
+      <div class="budget-box"><div class="budget-box-val" id="bgt-count">0</div><div class="budget-box-label">Dépenses</div></div>
+    </div>
+    <div class="budget-form">
+      <input type="text" id="bgt-label" placeholder="Libellé (ex: Aquarium)">
+      <input type="number" id="bgt-amount" placeholder="Montant €" min="0" step="0.50">
+      <select id="bgt-cat">
+        <option value="🎡 Activité">🎡 Activité</option>
+        <option value="🍽 Restaurant">🍽 Restaurant</option>
+        <option value="🛒 Courses">🛒 Courses</option>
+        <option value="⛽ Carburant">⛽ Carburant</option>
+        <option value="🚌 Transport">🚌 Transport</option>
+        <option value="🏖 Plage">🏖 Plage</option>
+        <option value="🎬 Cinéma">🎬 Cinéma</option>
+        <option value="🛍 Divers">🛍 Divers</option>
+      </select>
+      <button class="budget-add-btn" onclick="addBudgetEntry()">+ Ajouter</button>
+    </div>
+    <div id="budget-entries"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <span style="font-size:.72rem;color:var(--muted)">Budget estimé : 200–280 €</span>
+      <button class="budget-reset" onclick="resetBudget()">Réinitialiser</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── NAVIGATION ──
+const SECTION_LABELS = {
+  accueil:'Accueil',camp:'Camp de base',cartes:'Cartes & Plans',infos:'Infos pratiques',
+  transport:'Se déplacer',courses:'Courses',plages:'Plages & nature',activites:'Activités',
+  restos:'Restaurants',marches:'Marchés',planb:'Plan B',meteo:'Météo',
+  checklist:'Check-list',planning:'Planning',budget:'Budget'
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-grid-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const activeItem = document.querySelector(`.nav-grid-item[data-sec="${id}"]`);
+  if(activeItem) activeItem.classList.add('active');
+  const label = document.getElementById('topbar-section');
+  if(label) label.textContent = SECTION_LABELS[id] || id;
+  window.scrollTo({top:0,behavior:'instant'});
+  localStorage.setItem('lastSection', id);
+  closeNav();
+}
+
+function toggleNav() {
+  const open = document.getElementById('navPanel').classList.toggle('open');
+  document.getElementById('navBackdrop').classList.toggle('open', open);
+  document.getElementById('hamburger').classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+function closeNav() {
+  document.getElementById('navPanel').classList.remove('open');
+  document.getElementById('navBackdrop').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── CHECKLIST ──
+const CL_LISTS = ['cl-plage','cl-soin','cl-doc','cl-camp','cl-app','cl-divers'];
+
+function getCustomItems(){try{return JSON.parse(localStorage.getItem('cl-custom')||'{}');}catch(e){return {};}}
+function saveCustomItems(d){localStorage.setItem('cl-custom',JSON.stringify(d));}
+
+function buildCustomItemLi(text){
+  const li=document.createElement('li');
+  const cb=document.createElement('input');
+  cb.type='checkbox';cb.onchange=function(){saveCheck(this);};
+  li.appendChild(cb);
+  li.appendChild(document.createTextNode(' '+text));
+  const btn=document.createElement('button');
+  btn.className='cl-del';btn.textContent='✕';
+  btn.onclick=function(){deleteItem(this);};
+  li.appendChild(btn);
+  return li;
+}
+
+function loadCustomItems(){
+  const data=getCustomItems();
+  CL_LISTS.forEach(listId=>{
+    const ul=document.getElementById(listId);
+    if(!ul)return;
+    (data[listId]||[]).forEach(text=>ul.appendChild(buildCustomItemLi(text)));
+  });
+}
+
+function addItem(btn,listId){
+  const input=btn.closest('.cl-add-row').querySelector('.cl-add-input');
+  const text=input.value.trim();if(!text)return;
+  document.getElementById(listId).appendChild(buildCustomItemLi(text));
+  const data=getCustomItems();
+  if(!data[listId])data[listId]=[];
+  data[listId].push(text);saveCustomItems(data);
+  input.value='';updateProgress();
+}
+
+function deleteItem(btn){
+  const li=btn.closest('li');
+  const ul=li.closest('ul');
+  const listId=ul.id;
+  const text=(li.childNodes[1]?.textContent||'').trim();
+  const data=getCustomItems();
+  const customs=data[listId]||[];
+  const idx=customs.indexOf(text);
+  if(idx!==-1){customs.splice(idx,1);data[listId]=customs;saveCustomItems(data);}
+  else{
+    const deleted=JSON.parse(localStorage.getItem('cl-deleted')||'[]');
+    deleted.push({listId,text});localStorage.setItem('cl-deleted',JSON.stringify(deleted));
+  }
+  li.remove();saveAllChecks();updateProgress();
+}
+
+function toggleEditMode(){
+  const isEditing=document.body.classList.toggle('cl-editing');
+  const btn=document.getElementById('cl-edit-btn');
+  btn.textContent=isEditing?'✅ Terminer':'✏️ Éditer';
+  btn.classList.toggle('active',isEditing);
+}
+
+function saveCheck(cb){
+  cb.closest('li').classList.toggle('done',cb.checked);
+  saveAllChecks();updateProgress();
+}
+
+function saveAllChecks(){
+  const checks={};
+  document.querySelectorAll('.checklist input[type=checkbox]').forEach((c,i)=>{checks[i]=c.checked;});
+  localStorage.setItem('checklist',JSON.stringify(checks));
+}
+
+function updateProgress(){
+  const all=document.querySelectorAll('.checklist input[type=checkbox]');
+  const checked=document.querySelectorAll('.checklist input[type=checkbox]:checked');
+  const el=document.getElementById('check-progress');
+  if(el)el.textContent=`${checked.length} / ${all.length} coché${checked.length>1?'s':''}`;
+}
+
+function loadChecklist(){
+  const deleted=JSON.parse(localStorage.getItem('cl-deleted')||'[]');
+  deleted.forEach(({listId,text})=>{
+    const ul=document.getElementById(listId);if(!ul)return;
+    Array.from(ul.querySelectorAll('li')).forEach(li=>{
+      if((li.childNodes[1]?.textContent||'').trim()===text)li.remove();
+    });
+  });
+  loadCustomItems();
+  const saved=localStorage.getItem('checklist');if(!saved)return;
+  const checks=JSON.parse(saved);
+  document.querySelectorAll('.checklist input[type=checkbox]').forEach((c,i)=>{
+    if(checks[i]){c.checked=true;c.closest('li').classList.add('done');}
+  });
+  updateProgress();
+}
+
+function resetChecklist(){
+  if(!confirm('Réinitialiser toute la checklist (cochés, ajouts et suppressions) ?'))return;
+  localStorage.removeItem('checklist');
+  localStorage.removeItem('cl-custom');
+  localStorage.removeItem('cl-deleted');
+  location.reload();
+}
+
+// ── BACK TO TOP ──
+function scrollToTop() { window.scrollTo({top:0,behavior:'smooth'}); }
+window.addEventListener('scroll', () => {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 200);
+});
+
+
+// ── MÉTÉO EN TEMPS RÉEL (Open-Meteo) ──
+async function loadMeteo() {
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=46.197&longitude=-1.187&current=temperature_2m,weathercode,windspeed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=Europe%2FParis&forecast_days=7';
+    const r = await fetch(url);
+    const d = await r.json();
+    const c = d.current;
+    const wmo = {0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',80:'🌦',81:'🌧',82:'🌧',95:'⛈',96:'⛈'};
+    const ico = wmo[c.weathercode] || '🌡';
+    const block = document.getElementById('meteo-live-block');
+    block.innerHTML = `<div class="meteo-live">
+      <div class="meteo-live-card"><div class="meteo-live-val">${Math.round(c.temperature_2m)}°C</div><div class="meteo-live-label">Température</div><div class="meteo-live-sub">${ico}</div></div>
+      <div class="meteo-live-card"><div class="meteo-live-val">${Math.round(c.windspeed_10m)} km/h</div><div class="meteo-live-label">Vent</div><div class="meteo-live-sub">💨</div></div>
+    </div>`;
+    // Prévisions 7 jours
+    const days = d.daily;
+    const fcast = document.getElementById('meteo-forecast');
+    const jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    fcast.innerHTML = days.time.map((t,i) => {
+      const dt = new Date(t+'T12:00:00');
+      const j = jours[dt.getDay()];
+      const d2 = dt.getDate();
+      const rain = days.precipitation_sum[i] > 0 ? `💧${days.precipitation_sum[i].toFixed(1)}mm` : '';
+      return `<div class="meteo-day"><div class="meteo-day-date">${j} ${d2}</div><div class="meteo-day-ico">${wmo[days.weathercode[i]]||'🌡'}</div><div class="meteo-day-temp">${Math.round(days.temperature_2m_max[i])}° / ${Math.round(days.temperature_2m_min[i])}°</div><div class="meteo-day-rain">${rain}</div></div>`;
+    }).join('');
+    document.getElementById('meteo-forecast-block').style.display = '';
+    document.getElementById('meteo-update').textContent = 'Mis à jour : ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    document.getElementById('meteo-live-block').innerHTML = '<div class="box-tip">🌐 Météo en temps réel disponible avec une connexion internet.</div>';
+  }
+}
+
+// ── NOTES DE PLANNING ──
+function saveNote(textarea) {
+  const key = 'note_' + textarea.dataset.day;
+  localStorage.setItem(key, textarea.value);
+  const saved = document.getElementById('saved-' + textarea.dataset.day);
+  if(saved) { saved.classList.add('show'); setTimeout(() => saved.classList.remove('show'), 1500); }
+}
+
+function loadNotes() {
+  document.querySelectorAll('.plan-note').forEach(ta => {
+    const key = 'note_' + ta.dataset.day;
+    const val = localStorage.getItem(key);
+    if(val) ta.value = val;
+  });
+}
+
+// ── BUDGET ──
+function getBudget() {
+  try { return JSON.parse(localStorage.getItem('budget') || '[]'); } catch(e) { return []; }
+}
+function saveBudget(entries) {
+  localStorage.setItem('budget', JSON.stringify(entries));
+}
+function renderBudget() {
+  const entries = getBudget();
+  const total = entries.reduce((s,e) => s + e.amount, 0);
+  const budget = 280;
+  document.getElementById('bgt-total').textContent = total.toFixed(2) + ' €';
+  document.getElementById('bgt-remain').textContent = Math.max(0, budget - total).toFixed(2) + ' €';
+  document.getElementById('bgt-count').textContent = entries.length;
+  const container = document.getElementById('budget-entries');
+  if(!entries.length) { container.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.82rem;padding:10px">Aucune dépense enregistrée</div>'; return; }
+  container.innerHTML = entries.map((e,i) => `
+    <div class="budget-entry">
+      <div class="budget-entry-left"><span class="budget-entry-cat">${e.cat}</span><span>${e.label}</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="budget-entry-amount">${e.amount.toFixed(2)} €</span><button class="budget-del" onclick="deleteBudgetEntry(${i})">✕</button></div>
+    </div>`).join('');
+}
+function addBudgetEntry() {
+  const label = document.getElementById('bgt-label').value.trim();
+  const amount = parseFloat(document.getElementById('bgt-amount').value);
+  const cat = document.getElementById('bgt-cat').value;
+  if(!label || isNaN(amount) || amount <= 0) return;
+  const entries = getBudget();
+  entries.push({label, amount, cat, date: new Date().toLocaleDateString('fr-FR')});
+  saveBudget(entries);
+  renderBudget();
+  document.getElementById('bgt-label').value = '';
+  document.getElementById('bgt-amount').value = '';
+}
+function deleteBudgetEntry(i) {
+  const entries = getBudget();
+  entries.splice(i, 1);
+  saveBudget(entries);
+  renderBudget();
+}
+function resetBudget() {
+  if(confirm('Réinitialiser toutes les dépenses ?')) { localStorage.removeItem('budget'); renderBudget(); }
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  const lastSec = localStorage.getItem('lastSection') || 'accueil';
+  if(document.getElementById(lastSec)) showSection(lastSec);
+  loadChecklist();
+  updateProgress();
+  loadNotes();
+  renderBudget();
+  loadMeteo();
+});
+</script>
+</body>
+</html>
