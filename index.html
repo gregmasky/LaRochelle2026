@@ -401,82 +401,6 @@ body.cl-editing .cl-add-row{display:flex}
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">🐾 Spots Dog-Friendly</div>
-    <div id="map-dog" style="border-radius:8px;overflow:hidden;margin-bottom:10px;height:360px"></div>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-    (function(){
-      var map = L.map('map-dog', {scrollWheelZoom:false}).setView([46.165,-1.28],10);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-        attribution:'\u00a9 <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom:18
-      }).addTo(map);
-      var spots = [
-        {lat:46.1970, lng:-1.1860, name:"C\u00f4te rocheuse L'Houmeau", info:"Toute l'ann\u00e9e \ud83d\udfe2"},
-        {lat:46.1670, lng:-1.1590, name:"Parc Charruyer", info:"Toute l'ann\u00e9e \ud83d\udfe2 \u00b7 En laisse"},
-        {lat:46.1025, lng:-1.0880, name:"Plage de Marouillet (Yves)", info:"Toute l'ann\u00e9e \ud83d\udfe2"},
-        {lat:46.1650, lng:-1.3040, name:"Plage des Gouillauds (Ste-Marie-de-R\u00e9)", info:"Toute l'ann\u00e9e \ud83d\udfe2"},
-        {lat:46.2190, lng:-1.4110, name:"Plage de Radia (Loix)", info:"Autoris\u00e9e \ud83d\udfe2 \u00b7 En laisse"},
-        {lat:46.1820, lng:-1.4250, name:"Plages Marielle / Grignon (\u00cele de R\u00e9)", info:"\ud83d\udfe1 Juil\u2013Ao\u00fbt : hors 9h\u201319h"},
-        {lat:46.2460, lng:-1.5590, name:"C\u00f4te Sauvage / Conche des Baleines", info:"\ud83d\udfe1 15 juin\u201315 sept : 19h\u20139h seulement"}
-      ];
-      var pawIcon = L.divIcon({html:'\ud83d\udc3e', className:'', iconSize:[22,22], iconAnchor:[11,11]});
-      spots.forEach(function(s){
-        L.marker([s.lat,s.lng],{icon:pawIcon}).addTo(map)
-          .bindPopup('<strong>'+s.name+'</strong><br>'+s.info);
-      });
-    })();
-    </script>
-    <div style="font-size:.72rem;color:var(--muted);margin-bottom:10px">🐕 Chiens en laisse obligatoire · Vérifier horaires selon saison</div>
-    <table class="tbl">
-      <tr><th>Lieu</th><th>Type</th><th>Période / Horaires</th><th style="width:56px">Maps</th></tr>
-      <tr>
-        <td>Côte rocheuse L'Houmeau</td>
-        <td>Bord de mer</td>
-        <td>Toute l'année 🟢</td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=46.1970,-1.1860" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-      <tr>
-        <td>Parc Charruyer<br><small style="color:var(--muted)">La Rochelle, 2 km</small></td>
-        <td>Parc urbain</td>
-        <td>Toute l'année 🟢<br><small>En laisse</small></td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=Parc+Charruyer+La+Rochelle" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-      <tr>
-        <td>Plage de Marouillet<br><small style="color:var(--muted)">Yves (~15 km)</small></td>
-        <td>Plage de sable</td>
-        <td>Toute l'année 🟢<br><small>Site naturel protégé</small></td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+de+Marouillet+Yves+17340" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-      <tr>
-        <td>Plage des Gouillauds<br><small style="color:var(--muted)">Ste-Marie-de-Ré</small></td>
-        <td>Plage île de Ré</td>
-        <td>Toute l'année 🟢<br><small>Entre Les Grenettes et Gros Jonc</small></td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+des+Gouillauds+Sainte-Marie-de-Re" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-      <tr>
-        <td>Plage de Radia<br><small style="color:var(--muted)">Loix, Île de Ré</small></td>
-        <td>Plage île de Ré</td>
-        <td>Autorisée 🟢<br><small>En laisse obligatoire</small></td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+de+Radia+Loix+Ile+de+Re" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-      <tr>
-        <td>Plages Marielle / Grignon<br><small style="color:var(--muted)">Île de Ré</small></td>
-        <td>Plages île de Ré</td>
-        <td>🟡 Juil–Août : hors 9h–13h/14h–19h<br><small>Autorisées le reste de l'année</small></td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+Marielle+Ile+de+Re" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-      <tr>
-        <td>Côte Sauvage / Conche des Baleines<br><small style="color:var(--muted)">Phare des Baleines, Île de Ré</small></td>
-        <td>Côte sauvage</td>
-        <td>🟡 15 juin–15 sept : 19h–9h seulement<br><small>Libre hors saison</small></td>
-        <td><a class="btn btn-map" href="https://maps.google.com/?q=Phare+des+Baleines+Ile+de+Re" target="_blank" style="padding:3px 8px">📍</a></td>
-      </tr>
-    </table>
-    <div style="margin-top:10px;font-size:.72rem;color:var(--muted)">🟢 Accès libre · 🟡 Horaires restreints en été · Amende jusqu'à 135 € hors règles</div>
-  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
@@ -571,6 +495,57 @@ body.cl-editing .cl-add-row{display:flex}
       <tr><td>Tours de La Rochelle</td><td>Entrées</td></tr>
       <tr><td>Bunker de La Rochelle</td><td>Entrées</td></tr>
     </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🐾 Spots Dog-Friendly</div>
+    <div style="font-size:.72rem;color:var(--muted);margin-bottom:10px">🐕 Chiens en laisse obligatoire · Vérifier horaires selon saison</div>
+    <table class="tbl">
+      <tr><th>Lieu</th><th>Type</th><th>Période / Horaires</th><th style="width:56px">Maps</th></tr>
+      <tr>
+        <td>Côte rocheuse L'Houmeau</td>
+        <td>Bord de mer</td>
+        <td>Toute l'année 🟢</td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=46.1970,-1.1860" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+      <tr>
+        <td>Parc Charruyer<br><small style="color:var(--muted)">La Rochelle, 2 km</small></td>
+        <td>Parc urbain</td>
+        <td>Toute l'année 🟢<br><small>En laisse</small></td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=Parc+Charruyer+La+Rochelle" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+      <tr>
+        <td>Plage de Marouillet<br><small style="color:var(--muted)">Yves (~15 km)</small></td>
+        <td>Plage de sable</td>
+        <td>Toute l'année 🟢<br><small>Site naturel protégé</small></td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+de+Marouillet+Yves+17340" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+      <tr>
+        <td>Plage des Gouillauds<br><small style="color:var(--muted)">Ste-Marie-de-Ré</small></td>
+        <td>Plage île de Ré</td>
+        <td>Toute l'année 🟢<br><small>Entre Les Grenettes et Gros Jonc</small></td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+des+Gouillauds+Sainte-Marie-de-Re" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+      <tr>
+        <td>Plage de Radia<br><small style="color:var(--muted)">Loix, Île de Ré</small></td>
+        <td>Plage île de Ré</td>
+        <td>Autorisée 🟢<br><small>En laisse obligatoire</small></td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+de+Radia+Loix+Ile+de+Re" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+      <tr>
+        <td>Plages Marielle / Grignon<br><small style="color:var(--muted)">Île de Ré</small></td>
+        <td>Plages île de Ré</td>
+        <td>🟡 Juil–Août : hors 9h–13h/14h–19h<br><small>Autorisées le reste de l'année</small></td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=Plage+Marielle+Ile+de+Re" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+      <tr>
+        <td>Côte Sauvage / Conche des Baleines<br><small style="color:var(--muted)">Phare des Baleines, Île de Ré</small></td>
+        <td>Côte sauvage</td>
+        <td>🟡 15 juin–15 sept : 19h–9h seulement<br><small>Libre hors saison</small></td>
+        <td><a class="btn btn-map" href="https://maps.google.com/?q=Phare+des+Baleines+Ile+de+Re" target="_blank" style="padding:3px 8px">📍</a></td>
+      </tr>
+    </table>
+    <div style="margin-top:10px;font-size:.72rem;color:var(--muted)">🟢 Accès libre · 🟡 Horaires restreints en été · Amende jusqu'à 135 € hors règles</div>
   </div>
 </section>
 
